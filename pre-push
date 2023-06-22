@@ -20,7 +20,6 @@
 # with "WIP" (work in progress).
 
 push_command=$(ps -ocommand= -p $PPID)
-is_destructive='force|\-f'
 
 remote="$1"
 url="$2"
@@ -55,10 +54,9 @@ do
 done
 
 # Check for rebase before force pushing
-if [[ $push_command =~ $is_destructive ]]
+if [[ $push_command == *" -f"* ]] || [[ $push_command == *" force"* ]]
 then
     echo >&2 "Remember to pull the current branch before rebasing!"
     echo >&2 "You can use the --no-verify tag to skip this hook : )"
     exit 1
 fi
-
